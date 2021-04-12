@@ -4,12 +4,13 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
+const homesRouter = require('./homes-router');
 
 const app = express();
 
 const morganOption = (NODE_ENV === 'production')
     ? 'tiny'
-    : 'common' ;
+    : 'dev' ;
 
 app.use(morgan(morganOption));
 app.use(helmet());
@@ -18,6 +19,8 @@ app.use(cors());
 app.get('/', (req, res) => {
     res.send('Hello, you!');
 })
+
+app.use('/api/homes', homesRouter);
 
 app.use((error, req, res, next) => {
     let response
